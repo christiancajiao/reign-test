@@ -1,7 +1,6 @@
 import './App.css';
 import {useState, useEffect} from "react"
-import EmptyHeart from "./assets/empty-heart.png"
-import Time from "./assets/time.png"
+import Card from './components/card';
 
 
 function App() {
@@ -26,25 +25,29 @@ function App() {
     setFramework(frameworkSelected.target.value)
   }
 
-  let isFavorite = false
 
   function setItemToStorage(element) {
     //find the objet
     const selectedPost = listPost.find((post) => post.story_id ===  element.target.parentNode.value)
-    
-    localStorage.setItem('Posts', JSON.stringify(selectedPost))
-    //stringify the object
-    //set the objet
-    isFavorite = true
+
+    if(localStorage.getItem('Posts') === null) {
+      console.log('estavacio')
+      localStorage.setItem('Posts', JSON.stringify([selectedPost]))
+    } else {
+      console.log('no esta vacio')
+      const favList = localStorage.getItem('Posts')
+      const parsedList = JSON.parse(favList)
+      const addFav = [...parsedList, selectedPost]
+      localStorage.setItem('Posts', JSON.stringify(addFav))
+    }
+
   }
 
   function getFavorites() {
     const favList = localStorage.getItem('Posts')
     const parsedList = JSON.parse(favList)
-    //its a sigle object not an array
-    const arrStorage = [parsedList]
 
-    setListPost(arrStorage)
+    setListPost(parsedList)
   }
 
   function getAll() {
@@ -71,20 +74,7 @@ function App() {
       <ul className='container_list'> 
         {listPost.map((e) => {
           return(
-            <li className='card' value={e.story_id}>
-              <div className='card_information'>
-                <div className='card_information-created'>
-                  <img className="time-icon" src={Time}/>
-                  <span>{e.created_at}</span>
-                  <span> by {e.author}</span>
-                </div>
-                <div>
-                  <span>{e.story_title}</span>
-                </div>
-              </div>
-              <div className={isFavorite ? 'card_favorite' : 'card_non_favorite'} onClick={setItemToStorage}>
-              </div>
-            </li>
+            <Card value={e.story_id} created={e.created_at} author={e.author} title={e.story_title} saveLocal={setItemToStorage}/>
           )
         })}
       </ul>
