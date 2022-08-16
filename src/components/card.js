@@ -4,6 +4,10 @@ import Time from "../assets/time.png"
 function Card(props) {
     const [isFavorite, setIsFavorite] = useState(false)
 
+    function favorite() {
+        setIsFavorite(true)
+    }
+
     return(
         <li className='card' value={props.value}>
             <div className='card_information'>
@@ -16,7 +20,7 @@ function Card(props) {
                 <span>{props.title}</span>
                 </div>
             </div>
-            <div className={isFavorite ? 'card_favorite' : 'card_non_favorite'} onClick={props.saveLocal}>
+            <div className={isFavorite ? 'card_favorite' : 'card_non_favorite'} onClick={(e) => {props.saveLocal(e); favorite() }}>
             </div>
         </li>
     )

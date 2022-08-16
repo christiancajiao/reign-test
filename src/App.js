@@ -10,6 +10,7 @@ function App() {
   const [listPost, setListPost] = useState([])
   const [numberOfPages, setNumberOfPages] = useState(0)
   const [page, setPage] = useState(0)
+  const [arrPages, setArrPages] = useState([0,1,2,3,4,5,6,7,8,9])
 
   let request = `https://hn.algolia.com/api/v1/search_by_date?query=${framework}&page=${page}`
 
@@ -32,7 +33,10 @@ function App() {
   function setItemToStorage(element) {
     //find the objet
     const selectedPost = listPost.find((post) => post.story_id ===  element.target.parentNode.value)
+    // if object already exist in localstorage , then deleted 
 
+
+    //if locar storage is empty create an array with the object
     if(localStorage.getItem('Posts') === null) {
       console.log('estavacio')
       localStorage.setItem('Posts', JSON.stringify([selectedPost]))
@@ -63,22 +67,42 @@ function App() {
     })
   }
 
-
-  let arrpages = [1,2,3,4,5,6,7,8,9,10]
-
   function preview() {
     if(page !== 0) {
       setPage(page - 1)
+      if(page === arrPages[0]) {
+        const pages = arrPages
+        pages.pop()
+        pages.unshift(arrPages[0] - 1)
+      }
     }
   }
-  function next() {
+  function next(e) {
     if(page <= numberOfPages) {
       setPage(page + 1)
+      if(page === arrPages[arrPages.length -1]) {
+        const pages = arrPages
+        pages.shift()
+        pages.push(arrPages[arrPages.length -1] + 1)
+      }
+      
     }
+
+    
+    
   }
   
   function indexpage(e) { 
-    setPage(parseInt(e.target.value))
+    const valueButton = parseInt(e.target.value)
+   
+    if(valueButton === arrPages[arrPages.length -1]) {
+
+      const pages = arrPages
+      pages.shift()
+      pages.push(valueButton + 1)
+     
+    }
+    setPage(valueButton)
   }
   return (
     <div className="App">
@@ -100,13 +124,13 @@ function App() {
         })}
       </ul>
       <div className='pagination-all'>
-       <button onClick={preview} className='button_pag'>last</button>
-        {arrpages.map((e) => {
+       <button onClick={preview} className='button_pag'>{`<`}</button>
+        {arrPages.map((e) => {
           return(
-            <button className='button_pag' value={arrpages.indexOf(e)} onClick={indexpage}>{arrpages.indexOf(e)}</button>
+            <button className='button_pag' value={e} onClick={indexpage}>{e}</button>
           )
         })}
-       <button className='button_pag' onClick={next}>next</button>
+       <button className='button_pag' onClick={next}>{`>`}</button>
       </div>
     </div>
   );
