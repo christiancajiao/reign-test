@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react"
+import {useState} from "react"
 import Time from "../assets/time.png"
 
 function Card(props) {

@@ -70,6 +70,18 @@
   align-items: center;
   justify-content: center;
 }
+.nav-buttons button {
+  width: 98px;
+  height: 31px;
+  padding: 3px 16px 0 17px;
+  border-radius: 2px;
+  border: solid 1px #d6d6d6;
+}
+.nav-buttons button:focus {
+  border-radius: 2px;
+  border: solid 1px #1797ff;
+  color: #1797ff;
+}
 .pagination-all {
   display: flex;
   align-items: center;
@@ -91,6 +103,15 @@
 .button_pag:focus {
   background-color: #1890ff;
   color: white;
+}
+#frameworks {
+  width: 240px;
+  height: 32px;
+  margin: 33px 14px 1px 100px;
+  padding: 5px 12px 5px 12px;
+  border-radius: 4px;
+  border: solid 1px #2e2e2e;
+  background-color: #fff;
 }
 select#frameworks option[value="React"]   { background-image:url(./assets/react.png);   }
 select#frameworks option[value="Vue"] { background-image:url(./assets/vue.png); }

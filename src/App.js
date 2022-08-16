@@ -1,6 +1,7 @@
 import './App.css';
 import {useState, useEffect} from "react"
-import Card from './components/card';
+import AllPost from './components/All';
+import Favorites from './components/Favorites';
 
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
   const [numberOfPages, setNumberOfPages] = useState(0)
   const [page, setPage] = useState(0)
   const [arrPages, setArrPages] = useState([0,1,2,3,4,5,6,7,8,9])
+  const [sectionSelected, setSectionSelected] = useState('all')
 
   let request = `https://hn.algolia.com/api/v1/search_by_date?query=${framework}&page=${page}`
 
@@ -64,19 +66,27 @@ function App() {
 
   }
 
+  function sectionActive() {
+    if(sectionSelected === 'all') {
+      setSectionSelected('favorites')
+    }
+  }
+
+
   function getFavorites() {
     const favList = localStorage.getItem("Posts");
     const parsedList = JSON.parse(favList)
 
     setListPost(parsedList)
+    sectionActive()
   }
 
   function getAll() {
     apiCall()
-
+    sectionActive()
   }
 
-  function preview() {
+  function previus() {
     if(page !== 0) {
       setPage(page - 1)
       if(page === arrPages[0]) {
@@ -86,7 +96,7 @@ function App() {
       }
     }
   }
-  function next(e) {
+  function next() {
     if(page <= numberOfPages) {
       setPage(page + 1)
       if(page === arrPages[arrPages.length -1]) {
@@ -97,8 +107,8 @@ function App() {
     }
   }
   
-  function indexpage(e) { 
-    const valueButton = parseInt(e.target.value)
+  function indexpage(post) { 
+    const valueButton = parseInt(post.target.value)
    
     if(valueButton === arrPages[arrPages.length -1]) {
       const pages = arrPages
@@ -108,6 +118,7 @@ function App() {
 
     setPage(valueButton)
   }
+
   return (
     <div className="App">
       <header className='header'>HACKER NEWS</header>
@@ -120,28 +131,7 @@ function App() {
         <option value="Vue">Vue</option>
         <option value="Angular">Angular</option>
       </select>
-      <ul className='container_list'> 
-        {listPost.map((e) => {
-          return(
-            <Card 
-              value={e.story_id} 
-              created={e.created_at} 
-              author={e.author} 
-              title={e.story_title} 
-              saveLocal={setItemToStorage}
-            />
-          )
-        })}
-      </ul>
-      <div className='pagination-all'>
-       <button onClick={preview} className='button_pag'>{`<`}</button>
-        {arrPages.map((e) => {
-          return(
-            <button className='button_pag' value={e} onClick={indexpage}>{e}</button>
-          )
-        })}
-       <button className='button_pag' onClick={next}>{`>`}</button>
-      </div>
+      {sectionSelected ? <AllPost list={listPost} setItemToStorage={setItemToStorage} previus={previus} next={next} indexPage={indexpage} arrPages={arrPages} /> : <Favorites list={listPost} setItemToStorage={setItemToStorage} previus={previus} next={next} indexPage={indexpage} arrPages={arrPages} />}
     </div>
   );
 }
