@@ -1,5 +1,40 @@
-.card {
-  border: 1px solid black;
-  padding: 10px;
-  margin: 10px;
+.container_list {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+
 }
+.card {
+  display: flex;
+  flex-direction: row;
+  width: 40vw;
+  height: 90px;
+  padding: 0 0 0 26px;
+  opacity: 0.8;
+  border-radius: 6px;
+  border: solid 1px #979797;
+  background-color: #fff;
+}
+.card_favorite {
+  background-color: darkgrey;
+  display: flex;
+  align-items: center;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  background-image: url(./assets/empty-heart.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.card_information {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  justify-content: center;
+  margin: 6px 16px 14px 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+
+select#frameworks option[value="React"]   { background-image:url(./assets/react.png);   }
+select#frameworks option[value="Vue"] { background-image:url(./assets/vue.png); }
+select#frameworks option[value="Angular"] { background-image:url(./assets/angular.png); }
