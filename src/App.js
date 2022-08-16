@@ -19,8 +19,14 @@ function App() {
     .then(response => response.json())
     .then(data => {
       let postArray = data.hits
-      postArray.length = 8
-      setListPost(postArray)
+      let validPostArray = []
+      postArray.forEach(post => {
+        if(post.story_title !== null) {
+          validPostArray.push(post)
+        }
+      });
+      validPostArray.length = 8
+      setListPost(validPostArray)
       setNumberOfPages(data.nbPages)
     })
   }, [framework, page])
