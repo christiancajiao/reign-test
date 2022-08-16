@@ -1,7 +1,6 @@
 import './App.css';
 import {useState, useEffect} from "react"
 import Card from './components/card';
-import { click } from '@testing-library/user-event/dist/click';
 
 
 function App() {
@@ -14,7 +13,7 @@ function App() {
 
   let request = `https://hn.algolia.com/api/v1/search_by_date?query=${framework}&page=${page}`
 
-  useEffect(() => {
+  function apiCall() {
     fetch(request)
     .then(response => response.json())
     .then(data => {
@@ -29,6 +28,9 @@ function App() {
       setListPost(validPostArray)
       setNumberOfPages(data.nbPages)
     })
+  }
+  useEffect(() => {
+    apiCall()
   }, [framework, page])
 
   function getValueFramework(frameworkSelected) {
@@ -39,17 +41,23 @@ function App() {
   function setItemToStorage(element) {
     //find the objet
     const selectedPost = listPost.find((post) => post.story_id ===  element.target.parentNode.value)
-    // if object already exist in localstorage , then deleted 
-
-
-    //if locar storage is empty create an array with the object
+    
     if(localStorage.getItem('Posts') === null) {
-      console.log('estavacio')
+      //create a new array with one post
       localStorage.setItem('Posts', JSON.stringify([selectedPost]))
-    } else {
-      console.log('no esta vacio')
+    }  else {
+      //if local storage have something check if the postselected already exist
       const favList = localStorage.getItem('Posts')
       const parsedList = JSON.parse(favList)
+      //if already exist dont set item
+
+      for(let i = 0; i < parsedList.length; i++) {
+        if(selectedPost.story_id === parsedList[i].story_id) {
+          return
+        }
+      }
+      //if dont exist added to the array in local storage
+  
       const addFav = [...parsedList, selectedPost]
       localStorage.setItem('Posts', JSON.stringify(addFav))
     }
@@ -57,20 +65,15 @@ function App() {
   }
 
   function getFavorites() {
-    const favList = localStorage.getItem('Posts')
+    const favList = localStorage.getItem("Posts");
     const parsedList = JSON.parse(favList)
 
     setListPost(parsedList)
   }
 
   function getAll() {
-    fetch(request)
-    .then(response => response.json())
-    .then(data => {
-      let postArray = data.hits
-      postArray.length = 8
-      setListPost(postArray)
-    })
+    apiCall()
+
   }
 
   function preview() {
@@ -90,24 +93,19 @@ function App() {
         const pages = arrPages
         pages.shift()
         pages.push(arrPages[arrPages.length -1] + 1)
-      }
-      
+      }    
     }
-
-    
-    
   }
   
   function indexpage(e) { 
     const valueButton = parseInt(e.target.value)
    
     if(valueButton === arrPages[arrPages.length -1]) {
-
       const pages = arrPages
       pages.shift()
-      pages.push(valueButton + 1)
-     
+      pages.push(valueButton + 1) 
     }
+
     setPage(valueButton)
   }
   return (
@@ -125,7 +123,13 @@ function App() {
       <ul className='container_list'> 
         {listPost.map((e) => {
           return(
-            <Card value={e.story_id} created={e.created_at} author={e.author} title={e.story_title} saveLocal={setItemToStorage}/>
+            <Card 
+              value={e.story_id} 
+              created={e.created_at} 
+              author={e.author} 
+              title={e.story_title} 
+              saveLocal={setItemToStorage}
+            />
           )
         })}
       </ul>
