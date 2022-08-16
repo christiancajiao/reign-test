@@ -1,38 +1,74 @@
+.header {
+  height: 114px;
+  margin: 0 0 70px;
+  box-shadow: 0 1px 4px 0 rgba(0, 21, 41, 0.12);
+  background-image: linear-gradient(to bottom, #ececec -32%, #fff 124%);
+}
 .container_list {
   display: grid;
-  grid-template-rows: 1fr 1fr;
-
+  grid-template-columns: repeat(2, 1fr);
+  margin: 50px;
 }
 .card {
   display: flex;
   flex-direction: row;
-  width: 40vw;
+  width: 550px;
   height: 90px;
   padding: 0 0 0 26px;
+  margin: 30px 5px 10px 5px;
   opacity: 0.8;
   border-radius: 6px;
   border: solid 1px #979797;
   background-color: #fff;
 }
-.card_favorite {
-  background-color: darkgrey;
+.card_non_favorite {
+  background-color: #60606043;
   display: flex;
   align-items: center;
-  align-items: center;
   justify-content: center;
-  width: 20%;
+  width: 68px;
   background-image: url(./assets/empty-heart.png);
   background-repeat: no-repeat;
   background-position: center;
+  background-size: 1.5em;
+}
+.card_favorite {
+  background-color: #60606043;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  background-image: url(./assets/full-heart.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1.5em;
 }
 .card_information {
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 482px;
   justify-content: center;
   margin: 6px 16px 14px 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto';
   font-size: 14px;
+}
+.card_information-created {
+  font-size: 11px;
+  padding-bottom: 7px;
+  color: #767676;
+
+}
+.time-icon {
+  width: 16px;
+  height: 16px;
+  padding-right: 7px;
+  position: relative;
+  top: 2px;
+}
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 select#frameworks option[value="React"]   { background-image:url(./assets/react.png);   }
