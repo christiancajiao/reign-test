@@ -2,6 +2,7 @@ import './App.css';
 import {useState, useEffect} from "react"
 import AllPost from './components/All';
 import Favorites from './components/Favorites';
+import ReactLogo from './assets/react.png'
 
 
 function App() {
@@ -127,9 +128,9 @@ function App() {
         <button onClick={getFavorites}>My faves</button>
       </div>
       <select id='frameworks' onClick={getValueFramework}>
-        <option value="React">React</option>
-        <option value="Vue">Vue</option>
-        <option value="Angular">Angular</option>
+        <option value="React" id="reactOption">React</option>
+        <option value="Vue" >Vue</option>
+        <option value="Angular" data-thumbnail={ReactLogo}>Angular</option>
       </select>
       {sectionSelected ? <AllPost list={listPost} setItemToStorage={setItemToStorage} previus={previus} next={next} indexPage={indexpage} arrPages={arrPages} /> : <Favorites list={listPost} setItemToStorage={setItemToStorage} previus={previus} next={next} indexPage={indexpage} arrPages={arrPages} />}
     </div>
